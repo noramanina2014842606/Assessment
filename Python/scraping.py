@@ -1,18 +1,16 @@
-import requests
-import urllib2
+import urllib
+import re
 from bs4 import BeautifulSoup
 
-url ="http://fskm.uitm.edu.my/v1/fakulti/staff-directory/academic/1097.html/"
-r = requests.get(url)
+url = "http://fskm.uitm.edu.my/v1/fakulti/staff-directory/academic/1097.html/"
 
-soup = BeautifulSoup(r.content)
+page = urllib.urlopen(url).read()
+soup = BeautifulSoup(page)
 
-links = soup.find_all("a")
-
-
-g_data = soup.find_all("table", {"id": "mytable"})
-for item in g_data:
-        print ("INFORMATION" + item.text)
+for tr in soup.find_all('tr')[2:]:
+    tds = tr.find_all('td')
+    print "Name: %s, Position: %s, " % \
+          (tds[0].text, tds[1].text)
 
 
 
